@@ -1,0 +1,274 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --olive: #4a5a28; --olive-light: #6b7a3a; --olive-dark: #2d3818;
+    --cream: #faf8f2; --gold: #c9a84c; --blush: #8b3a5a; --text: #1a1a1a; --muted: #5a5a4a;
+  }
+  #app { font-family: 'Cormorant Garamond', Georgia, serif; background: var(--cream); min-height: 600px; color: var(--text); }
+  .page { display: none; }
+  .page.active { display: block; }
+  .home-hero { background: linear-gradient(160deg, #1a1f0a 0%, #2d3818 40%, #1a1f0a 100%); padding: 3rem 2rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+  .home-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.12) 0%, transparent 70%); }
+  .stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+  .star { position: absolute; width: 2px; height: 2px; background: rgba(201,168,76,0.6); border-radius: 50%; }
+  .brand-title { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 600; color: #f5e8c0; letter-spacing: 0.05em; line-height: 1.15; position: relative; text-shadow: 0 2px 20px rgba(201,168,76,0.3); }
+  .brand-by { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; display: block; margin: 0.5rem 0 0.2rem; }
+  .brand-name { font-size: 2.6rem; display: block; color: var(--gold); font-weight: 600; }
+  .hero-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; color: rgba(245,232,192,0.7); font-size: 1.05rem; margin-top: 1rem; letter-spacing: 0.03em; position: relative; }
+  .divider { width: 80px; height: 1px; background: var(--gold); margin: 1.2rem auto; opacity: 0.5; position: relative; }
+  .divider::before, .divider::after { content: '✦'; position: absolute; top: -7px; color: var(--gold); font-size: 10px; }
+  .divider::before { left: -14px; } .divider::after { right: -14px; }
+  .section { padding: 1.8rem 1.5rem; }
+  .section-title { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 0.15em; color: var(--olive); text-align: center; margin-bottom: 1.2rem; text-transform: uppercase; }
+  .steps-row { display: flex; gap: 10px; justify-content: center; }
+  .step-card { background: white; border: 0.5px solid rgba(74,90,40,0.2); border-radius: 12px; padding: 1rem 0.7rem; text-align: center; flex: 1; max-width: 150px; }
+  .step-num { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--olive); font-weight: 600; }
+  .step-text { font-size: 0.82rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.4; }
+  .categories { padding: 0 1.5rem 2rem; }
+  .cat-btn { width: 100%; padding: 1rem 1.2rem; margin-bottom: 0.85rem; border-radius: 12px; border: 1px solid; cursor: pointer; display: flex; align-items: center; gap: 1rem; background: white; transition: all 0.2s; text-align: left; }
+  .cat-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .cat-btn.love { border-color: rgba(139,58,90,0.3); }
+  .cat-btn.career { border-color: rgba(74,90,40,0.3); }
+  .cat-btn.premium { border-color: rgba(201,168,76,0.5); background: linear-gradient(135deg, #fffdf5, #fff8e6); }
+  .cat-icon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
+  .cat-info { flex: 1; }
+  .cat-name { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600; color: var(--text); }
+  .cat-btn.love .cat-name { color: var(--blush); }
+  .cat-btn.career .cat-name { color: var(--olive); }
+  .cat-btn.premium .cat-name { color: #8a6820; }
+  .cat-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+  .cat-arrow { font-size: 1.2rem; color: var(--muted); flex-shrink: 0; }
+  .page-header { padding: 1.5rem; border-bottom: 0.5px solid rgba(74,90,40,0.15); display: flex; align-items: center; gap: 1rem; background: white; position: sticky; top: 0; z-index: 10; }
+  .back-btn { background: none; border: 0.5px solid rgba(74,90,40,0.3); border-radius: 8px; padding: 0.4rem 0.8rem; cursor: pointer; font-size: 0.85rem; color: var(--olive); font-family: 'Cormorant Garamond', serif; }
+  .page-header-title { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--olive-dark); letter-spacing: 0.08em; }
+  .readings-list { padding: 1.2rem 1.5rem; }
+  .reading-card { background: white; border: 0.5px solid rgba(74,90,40,0.2); border-radius: 12px; padding: 1.1rem 1.2rem; margin-bottom: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; }
+  .reading-card:hover { border-color: rgba(74,90,40,0.5); box-shadow: 0 3px 15px rgba(0,0,0,0.07); }
+  .reading-card.love-card:hover { border-color: rgba(139,58,90,0.4); }
+  .reading-card.premium-card { background: linear-gradient(135deg, #fffdf5, #fff8e6); border-color: rgba(201,168,76,0.4); }
+  .reading-title { font-family: 'Cinzel', serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.3rem; font-weight: 600; }
+  .reading-desc { font-size: 0.8rem; color: var(--muted); font-style: italic; line-height: 1.35; max-width: 200px; }
+  .reading-price { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 600; color: var(--olive); white-space: nowrap; margin-left: 0.8rem; }
+  .reading-card.premium-card .reading-price { color: #8a6820; }
+  .note-box { background: rgba(74,90,40,0.06); border-left: 3px solid var(--olive-light); border-radius: 0 8px 8px 0; padding: 1rem 1.1rem; margin: 0 1.5rem 1.5rem; font-size: 0.82rem; color: var(--muted); line-height: 1.55; font-style: italic; }
+  .payment-hero { background: linear-gradient(160deg, #1a1f0a, #2d3818); padding: 1.5rem; text-align: center; color: #f5e8c0; }
+  .payment-reading-name { font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--gold); letter-spacing: 0.06em; }
+  .payment-price-big { font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 600; color: #f5e8c0; line-height: 1; margin: 0.5rem 0 0.2rem; }
+  .payment-price-note { font-size: 0.85rem; color: rgba(245,232,192,0.6); font-style: italic; }
+  .qr-section { padding: 2rem 1.5rem; text-align: center; }
+  .qr-label { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 1.2rem; }
+  .qr-frame { display: inline-block; padding: 1rem; background: white; border: 1px solid rgba(201,168,76,0.35); border-radius: 16px; box-shadow: 0 4px 24px rgba(74,90,40,0.1); }
+  .qr-frame img { width: 180px; height: 180px; display: block; }
+  .qr-bank { margin-top: 1.2rem; font-size: 0.88rem; color: var(--muted); }
+  .qr-bank strong { color: var(--olive-dark); font-weight: 600; }
+  .upi-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,90,40,0.08); border: 0.5px solid rgba(74,90,40,0.2); border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.82rem; color: var(--olive); margin-top: 0.7rem; font-style: italic; }
+  .steps-after { margin: 0 1.5rem 2rem; background: white; border: 0.5px solid rgba(74,90,40,0.15); border-radius: 12px; padding: 1.2rem; }
+  .steps-after-title { font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.1em; color: var(--olive); margin-bottom: 0.9rem; text-transform: uppercase; }
+  .after-step { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 0.75rem; }
+  .after-step:last-child { margin-bottom: 0; }
+  .after-num { width: 22px; height: 22px; background: var(--olive); border-radius: 50%; color: white; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Cinzel', serif; font-weight: 600; }
+  .after-text { font-size: 0.84rem; color: var(--muted); line-height: 1.45; }
+  .after-text strong { color: var(--text); font-weight: 600; }
+  .ig-link { color: var(--olive); font-weight: 600; text-decoration: none; }
+  .ig-link:hover { text-decoration: underline; }
+  .site-footer { background: var(--olive-dark); padding: 1.2rem; text-align: center; color: rgba(245,232,192,0.5); font-size: 0.78rem; letter-spacing: 0.05em; }
+  .site-footer a { color: var(--gold); text-decoration: none; }
+  .site-footer a:hover { text-decoration: underline; }
+</style>
+
+<div id="app">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="home-hero">
+      <div class="stars" id="stars"></div>
+      <div class="brand-title">
+        Cards Whisper
+        <span class="brand-by">by</span>
+        <span class="brand-name">Ankitha</span>
+      </div>
+      <div class="divider"></div>
+      <p class="hero-sub">✨ Tarot readings delivered to your soul ✨</p>
+    </div>
+    <div class="section">
+      <p class="section-title">How it works</p>
+      <div class="steps-row">
+        <div class="step-card"><div class="step-num">1</div><div class="step-text">Choose your reading</div></div>
+        <div class="step-card"><div class="step-num">2</div><div class="step-text">Pay & send details</div></div>
+        <div class="step-card"><div class="step-num">3</div><div class="step-text">Receive video in 48 hrs</div></div>
+      </div>
+    </div>
+    <div class="categories">
+      <p class="section-title">Choose a reading</p>
+      <button class="cat-btn love" onclick="showPage('page-love')">
+        <span class="cat-icon">🌸</span>
+        <div class="cat-info"><div class="cat-name">Love & Relationships</div><div class="cat-desc">Love, marriage & relationship guidance</div></div>
+        <span class="cat-arrow">›</span>
+      </button>
+      <button class="cat-btn career" onclick="showPage('page-career')">
+        <span class="cat-icon">🌿</span>
+        <div class="cat-info"><div class="cat-name">Career & Finance</div><div class="cat-desc">Work, money & growth readings</div></div>
+        <span class="cat-arrow">›</span>
+      </button>
+      <button class="cat-btn premium" onclick="showPage('page-premium')">
+        <span class="cat-icon">✨</span>
+        <div class="cat-info"><div class="cat-name">Premium Readings</div><div class="cat-desc">2026 predictions & divine guidance</div></div>
+        <span class="cat-arrow">›</span>
+      </button>
+    </div>
+    <div class="site-footer">
+      Follow on Instagram &nbsp;
+      <a href="https://www.instagram.com/__ankitha.reddy.s__/" target="_blank" rel="noopener">@__ANKITHA.REDDY.S__</a>
+    </div>
+  </div>
+
+  <!-- LOVE -->
+  <div class="page" id="page-love">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('page-home')">← Back</button>
+      <span class="page-header-title">🌸 Love & Relationships</span>
+    </div>
+    <div class="readings-list">
+      <div class="reading-card love-card" onclick="showPayment('3 Questions Reading', 250, 'love')">
+        <div><div class="reading-title">3 Questions Reading</div><div class="reading-desc">Ask anything about love & get guidance</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card love-card" onclick="showPayment('Past, Present & Future', 250, 'love')">
+        <div><div class="reading-title">Past, Present & Future</div><div class="reading-desc">A timeline spread for your love story</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card love-card" onclick="showPayment('You vs Them', 250, 'love')">
+        <div><div class="reading-title">You vs Them</div><div class="reading-desc">Feelings, intentions, actions & decisions</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card love-card" onclick="showPayment('What You Can Expect', 250, 'love')">
+        <div><div class="reading-title">What You Can Expect</div><div class="reading-desc">Strengths & weaknesses in your path</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card love-card" onclick="showPayment('Additional Question', 50, 'love')">
+        <div><div class="reading-title">Additional Question</div><div class="reading-desc">Add-on to any existing reading</div></div>
+        <div class="reading-price">₹50</div>
+      </div>
+    </div>
+    <div class="note-box">💌 Details needed: Your full name · Partner's full name · Current status (Married / Relationship / Love Interest)</div>
+  </div>
+
+  <!-- CAREER -->
+  <div class="page" id="page-career">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('page-home')">← Back</button>
+      <span class="page-header-title">🌿 Career & Finance</span>
+    </div>
+    <div class="readings-list">
+      <div class="reading-card" onclick="showPayment('3 Questions Reading', 250, 'career')">
+        <div><div class="reading-title">3 Questions Reading</div><div class="reading-desc">Clarity on career & financial matters</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card" onclick="showPayment('Past, Present & Future', 250, 'career')">
+        <div><div class="reading-title">Past, Present & Future</div><div class="reading-desc">Your career journey across time</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card" onclick="showPayment('What You Can Expect', 250, 'career')">
+        <div><div class="reading-title">What You Can Expect</div><div class="reading-desc">Strengths & weaknesses ahead</div></div>
+        <div class="reading-price">₹250</div>
+      </div>
+      <div class="reading-card" onclick="showPayment('Additional Question', 50, 'career')">
+        <div><div class="reading-title">Additional Question</div><div class="reading-desc">Add-on to any existing reading</div></div>
+        <div class="reading-price">₹50</div>
+      </div>
+    </div>
+    <div class="note-box">💼 Details needed: Your full name · Date of birth · Time of birth</div>
+  </div>
+
+  <!-- PREMIUM -->
+  <div class="page" id="page-premium">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('page-home')">← Back</button>
+      <span class="page-header-title">✨ Premium Readings</span>
+    </div>
+    <div class="readings-list">
+      <div class="reading-card premium-card" onclick="showPayment('2026 Predictions', 350, 'premium')">
+        <div><div class="reading-title">2026 Predictions</div><div class="reading-desc">Love, marriage, finance & career — full year ahead</div></div>
+        <div class="reading-price">₹350</div>
+      </div>
+      <div class="reading-card premium-card" onclick="showPayment('Divine Guidance & Advice', 300, 'premium')">
+        <div><div class="reading-title">Divine Guidance & Advice</div><div class="reading-desc">Oracle Cards + any one basic reading</div></div>
+        <div class="reading-price">₹300</div>
+      </div>
+    </div>
+    <div class="note-box">✨ Premium readings include oracle card insights layered with tarot for deeper soul guidance.</div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="page" id="page-payment">
+    <div class="page-header">
+      <button class="back-btn" onclick="goBackFromPayment()">← Back</button>
+      <span class="page-header-title">Payment</span>
+    </div>
+    <div class="payment-hero">
+      <div class="payment-reading-name" id="pay-reading-name">3 Questions Reading</div>
+      <div class="payment-price-big" id="pay-price">₹250</div>
+      <div class="payment-price-note">Pay via PhonePe or Google Pay</div>
+    </div>
+    <div class="qr-section">
+      <div class="qr-label">Scan to pay</div>
+      <div class="qr-frame">
+        <img id="qr-img" src="" alt="UPI QR Code" />
+      </div>
+      <div class="qr-bank"><strong>Kotak Mahindra Bank — 3453</strong></div>
+      <div class="upi-badge">📱 PhonePe & Google Pay accepted</div>
+    </div>
+    <div class="steps-after">
+      <div class="steps-after-title">After payment</div>
+      <div class="after-step">
+        <div class="after-num">1</div>
+        <div class="after-text"><strong>Send payment screenshot</strong> to Instagram DM &nbsp;<a class="ig-link" href="https://www.instagram.com/__ankitha.reddy.s__/" target="_blank" rel="noopener">@__ANKITHA.REDDY.S__</a></div>
+      </div>
+      <div class="after-step">
+        <div class="after-num">2</div>
+        <div class="after-text"><strong>Share your details</strong> (name, partner name / DOB as needed)</div>
+      </div>
+      <div class="after-step">
+        <div class="after-num">3</div>
+        <div class="after-text"><strong>Receive your reading</strong> as a recorded video within <strong>48 hours</strong></div>
+      </div>
+    </div>
+    <div class="site-footer">
+      No calls — all readings sent as recorded videos 🎥<br><br>
+      <a href="https://www.instagram.com/__ankitha.reddy.s__/" target="_blank" rel="noopener">@__ANKITHA.REDDY.S__</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const paymentSources = { love: 'page-love', career: 'page-career', premium: 'page-premium' };
+  let currentPaymentSource = 'page-home';
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function showPayment(name, price, type) {
+    currentPaymentSource = paymentSources[type] || 'page-home';
+    document.getElementById('pay-reading-name').textContent = name;
+    document.getElementById('pay-price').textContent = '₹' + price;
+    const upiData = 'upi://pay?pa=ankitha@kotak&pn=AnkithaReddy&am=' + price + '&cu=INR&tn=' + encodeURIComponent(name);
+    document.getElementById('qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(upiData);
+    showPage('page-payment');
+  }
+
+  function goBackFromPayment() { showPage(currentPaymentSource); }
+
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 35; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${(Math.random()*0.5+0.2).toFixed(2)};width:${Math.random()<0.3?'3px':'2px'};height:${Math.random()<0.3?'3px':'2px'}`;
+    starsEl.appendChild(s);
+  }
+</script>
